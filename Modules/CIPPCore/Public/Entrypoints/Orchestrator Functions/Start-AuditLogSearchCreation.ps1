@@ -19,7 +19,7 @@ function Start-AuditLogSearchCreation {
         foreach ($Tenant in $TenantList) {
             $Configuration = $ConfigEntries | Where-Object { ($_.Tenants -match $TenantFilter -or $_.Tenants -match 'AllTenants') }
             if ($Configuration) {
-                $ServiceFilters = $Configuration | Select-Object -Property type | Sort-Object -Property type -Unique | ForEach-Object { $_.type.split('.')[1] }
+                $ServiceFilters = $Configuration | Select-Object -Property type -Unique | Where-Object { $_.type -ne $null -and $_.type -match '\.' } | ForEach-Object { $_.type.split('.')[1] }
                 try {
                     $LogSearch = @{
                         StartTime         = $StartTime
